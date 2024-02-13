@@ -1,0 +1,262 @@
+\ProvidesPackage{beamersetup}
+
+%%%Usefull link
+%tikz-equations:
+%http://www.wekaleamstudios.co.uk/posts/creating-a-presentation-with-latex-beamer-equations-and-tikz/
+% There are many different themes available for Beamer. A comprehensive
+% list with examples is given here:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+% You can uncomment the themes below if you would like to use a different
+% one:
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{boxes}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+\usetheme{default}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+%\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+\title{Relativit\'a generale}
+
+% A subtitle is optional and this may be deleted
+\subtitle{Spazio-tempo, sistemi di riferimento cosmologia}
+
+%\author{F.~Author\inst{1} \and S.~Another\inst{2}}
+% - Give the names in the same order as the appear in the paper.
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+%\institute[Universities of Somewhere and Elsewhere] % (optional, but mostly needed)
+%{
+% \inst{1}
+% Department of Computer Science\\
+%  University of Somewhere
+%  \and
+%  \inst{2}%
+%  Department of Theoretical Philosophy\\
+%  University of Elsewhere}
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+
+\date{Appello Marzo, \today}
+% - Either use conference name or its abbreviation.
+% - Not really informative to the audience, more for people (including
+%   yourself) who are reading the slides online
+
+\subject{Relativit\'a}
+% This is only inserted into the PDF information catalog. Can be left
+% out. 
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+
+% \pgfdeclareimage[height=0.5cm]{university-logo}{university-logo-filename}
+% \logo{\pgfuseimage{university-logo}}
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+%\AtBeginPart[]
+%{
+%  \begin{frame}<beamer>{Outline}    %\tableofcontents[currentsection]
+%  \end{frame}
+%}
+
+%\AtBeginDocument{%
+%\addtolength\abovedisplayskip{-0.5\baselineskip}%
+%\addtolength\belowdisplayskip{-1\baselineskip}%
+%\addtolength\abovedisplayshortskip{-0.5\baselineskip}%
+%\addtolength\belowdisplayshortskip{-1\baselineskip}%
+%}
+
+\makeatletter
+\AtBeginPart{%
+  \addtocontents{toc}{\protect\beamer@partintoc{\the\c@part}{\beamer@partnameshort}{\the\c@page}}%
+}
+%% number, shortname, page.
+\providecommand\beamer@partintoc[3]{%
+  \ifnum\c@tocdepth=-1\relax
+    % requesting onlyparts.
+    \makebox[6em]{PART #1:} #2
+    \par
+  \fi
+}
+\define@key{beamertoc}{onlyparts}[]{%
+  \c@tocdepth=-1\relax
+}
+\makeatother%
+
+%\AtBeginDocument{%
+%\addtolength\abovedisplayskip{-0.5\baselineskip}%
+%\addtolength\belowdisplayskip{-1\baselineskip}%
+%\addtolength\abovedisplayshortskip{-0.5\baselineskip}%
+%\addtolength\belowdisplayshortskip{-1\baselineskip}%
+%}
+\setbeamersize{text margin left=10pt,text margin right=10pt}
+%itemize personalization
+\setlength{\leftmargini}{-2pt}
+\makeatletter%%see https://tex.stackexchange.com/questions/411987/how-to-fix-hypertargets-directing-links-to-the-line-after-the-target-it-looks-l
+ \newcommand{\linkdest}[1]{\Hy@raisedlink{\hypertarget{#1}{}}}
+\makeatother
+
+\hypersetup{pdfpagemode=FullScreen}
+
+\addtobeamertemplate{block begin}{%
+  \setlength{\textwidth}{0.95\textwidth}%
+  \setlength\abovedisplayskip{0pt}%
+}{}
+
+\setbeamertemplate{caption}{\insertcaption}
+\setbeamercolor{author}{fg=blue}
+\setbeamerfont{title}{size=\Large, series=\bfseries}
+\setbeamerfont{subtitle}{size=\Large, series=\bfseries}
+\setbeamerfont{author}{size=\footnotesize}
+\setbeamerfont{date}{size=\small}
+
+\setbeamertemplate{section page}
+{
+    \begingroup
+    \begin{beamercolorbox}[sep=10pt,center,rounded=true,shadow=true]{section title}
+        \usebeamerfont{section title}\insertsection\par
+    \end{beamercolorbox}
+    \endgroup
+}
+
+\setbeamertemplate{subsection page}
+{
+    \begingroup
+    \begin{beamercolorbox}[sep=2pt,center,rounded=true,shadow=true]{section title}% sep= vertical space around text (between text and box border)
+        \usebeamerfont{section title}\insertsection\par
+    \end{beamercolorbox}
+    \vspace*{-1.pt}%    \vspace*{10pt}
+    \begin{beamercolorbox}[sep=6pt,center,rounded=true,shadow=true]{subsection title}
+        \usebeamerfont{subsection title}\insertsubsection\par
+    \end{beamercolorbox}
+    \endgroup
+}
+\setbeamerfont{section title}{size=\Large,series=\bfseries}
+\setbeamerfont{subsection title}{size=\large,series=\bfseries}
+    
+\AtBeginDocument{%
+%\makeatletter
+%\renewcommand{\itemize}[1][]{%
+%	\beamer@ifempty{#1}{}{\def\beamer@defaultospec{#1}}%
+%	\ifnum \@itemdepth >2\relax\@toodeep\else
+%	\advance\@itemdepth\@ne
+%	\beamer@computepref\@itemdepth% sets \beameritemnestingprefix
+%	\usebeamerfont{itemize/enumerate \beameritemnestingprefix body}%
+%	\usebeamercolor[fg]{itemize/enumerate \beameritemnestingprefix body}%
+%	\usebeamertemplate{itemize/enumerate \beameritemnestingprefix body begin}%
+%	\list
+%	{\usebeamertemplate{itemize \beameritemnestingprefix item}}
+%	{\def\makelabel##1{%
+%			{%
+%				\hss\llap{{%
+%						\usebeamerfont*{itemize \beameritemnestingprefix item}%
+%						\usebeamercolor[fg]{itemize \beameritemnestingprefix item}##1}}%
+%			}%
+%		}%
+%	}
+%	\fi%
+%	\beamer@cramped%
+%	\raggedright%
+%	\beamer@firstlineitemizeunskip%
+%}
+%\makeatother
+
+\addtolength\abovedisplayskip{-0.5\baselineskip}%
+\addtolength\belowdisplayskip{-1\baselineskip}%
+\addtolength\abovedisplayshortskip{-0.5\baselineskip}%
+\addtolength\belowdisplayshortskip{-1\baselineskip}%
+}
+\setlength{\mathindent}{0pt}
+
+\makeatletter
+\AtBeginPart{%
+\addtocontents{toc}{\protect\beamer@partintoc{\the\c@part}{\beamer@partnameshort}{\the\c@page}}%
+\frame{\partpage}
+}
+%% number, shortname, page.
+\providecommand\beamer@partintoc[3]{%
+  \ifnum\c@tocdepth=-1\relax
+    % requesting onlyparts.
+    \makebox[6em]{Part #1:} \parbox{0.5\textwidth}{#2}
+    \par
+  \fi
+}
+\define@key{beamertoc}{onlyparts}[]{%
+  \c@tocdepth=-1\relax
+}
+\makeatother%
+%%Display section subsection (title page) at beginning section subsection
+\AtBeginSection{\addtocounter{cherrysectionlist}{1}\addtocounter{todosectionlist}{1}
+\frame{\sectionpage}}
+\AtBeginSubsection{\frame{\subsectionpage}}
+
+\setbeamertemplate{navigation symbols}{}
+
+\makeatletter
+\setbeamertemplate{headline}
+{
+    \leavevmode%
+    \hbox{%Refintro
+        \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+            \hyperlink{intro}{Intro}
+        \end{beamercolorbox}%
+
+ \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%refs Part 1
+            \hyperlink{part:boh}{boh}
+        \end{beamercolorbox}%
+
+        
+        \begin{beamercolorbox}[wd=.35\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+            %   \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+            \insertframenumber{} \hspace*{2ex}  / \hspace*{2ex} \inserttotalframenumber
+            \hspace*{2ex} 
+        \end{beamercolorbox}}%
+        \vskip0pt%
+    }
+    \makeatother\setbeamertemplate{navigation symbols}{}
+
+\makeatletter
+\setbeamertemplate{headline}
+{
+    \leavevmode%
+    \hbox{%Refintro
+        \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+            \hyperlink{intro}{Intro}
+        \end{beamercolorbox}%
+
+ \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%refs Part 1
+            \hyperlink{part:boh}{boh}
+        \end{beamercolorbox}%
+
+        
+        \begin{beamercolorbox}[wd=.35\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+            %   \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+            \insertframenumber{} \hspace*{2ex}  / \hspace*{2ex} \inserttotalframenumber
+            \hspace*{2ex} 
+        \end{beamercolorbox}}%
+        \vskip0pt%
+    }
+    \makeatother

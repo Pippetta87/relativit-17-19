@@ -1,5 +1,6 @@
 \ProvidesPackage{LocalF}
 
+\DeclareMathOperator{\tg}{tan}
 \newcounter{columneqc}
 \stepcounter{equation}
 \newcommand\Label[1]{&\refstepcounter{columneqc}\ (\theequation.\thecolumneqc)\ltx@label{#1}&}
@@ -19,3 +20,113 @@
 \else
 \newenvironment{wordonframe}[1]{\comment}{\endcomment}
 \fi
+
+%%% COUNTERS
+\newcounter{cherrykey}%conta le keyword totali per auto ref
+\newcounter{cherrysectionlist}% conta le key prima di keywordlist
+\newcounter{todokey}%conta i todo totali per auto ref
+\newcounter{todosectionlist}% conta i todo prima di keywordlist
+\newcounter{mustkey}%conta i must totali per auto ref
+\newcounter{mustsectionlist}% conta i must prima di keywordlist
+
+\newcommand\headinginfo[1]{%
+  \addcontentsline{key-\thecherrysectionlist}{heading}{{#1}}%
+  \addtocontents{key-\thecherrysectionlist}{\vspace{5pt}}}
+%% expert approach to keywords
+ \makeatletter
+\newcommand\keyword[2][target-\thecherrykey]{%keyword
+\addtocounter{cherrykey}{1}
+\noindent{%
+\color{keyword}{#2}%
+}%
+\phantomsection% comment out if hyperref is not used
+  \linkdest{#1}%
+\addcontentsline{key-\thecherrysectionlist}{subsubsection}{\textbullet\protect\hyperlink{#1}{#2}}%
+}
+\newcommand\todo[2][todo-\thetodokey]{%todo
+	\addtocounter{todokey}{1}
+	\noindent{%
+		\color{todo}{#2}%
+	}%
+	\phantomsection% comment out if hyperref is not used
+	\linkdest{#1}%
+	\addcontentsline{todo-\thetodosectionlist}{subsubsection}{\textbullet\protect\hyperlink{#1}{#2}\hspace{1mm}}%
+}
+\newcommand\must[2][must-\themustkey]{%must
+	\addtocounter{mustkey}{1}
+	\noindent{%
+		\color{must}{#2}%
+	}%
+	\phantomsection% comment out if hyperref is not used
+	\linkdest{#1}%
+	\addcontentsline{must-\themustsectionlist}{subsubsection}{\textbullet\protect\hyperlink{#1}{#2}}%
+}
+\makeatother
+  
+\makeatletter
+\newcommand{\listofkeywordsbasic}{%listofkeyword
+  \@starttocorig{key-\thecherrysectionlist}
+}
+\newcommand{\listoftodosbasic}{%listoftodos
+	\@starttocorig{todo-\thetodosectionlist}
+}
+\newcommand{\listofmustsbasic}{%listofmusts
+	\@starttocorig{must-\themustsectionlist}
+}
+%%frameintoc
+\newcommand\listofframes{\@starttoc{lbf}}
+\newcommand\listofframesname{List of frames}
+\makeatother
+
+\newcommand\listmustsname{MUSTS}%listofmust
+\newcommand\listofmusts{%
+	\listmustsname\phantomsection: \listofmustsbasic}
+\newcommand\listkeywordsname{KEYWORDS}%listofkeyword
+\newcommand\listofkeywords{%
+\listkeywordsname\phantomsection: \listofkeywordsbasic}
+\newcommand\listtodosname{TODO}%listoftodo
+\newcommand\listoftodos{%
+\listtodosname\phantomsection: \listoftodosbasic}
+%%frameintoc
+\newcommand\frameintoc{%
+%\subsubsection{\insertframetitle}
+\addcontentsline{lbf}{section}{\protect\makebox[2em][l]{\insertframenumber\hfill}\insertframetitle\par}%
+}
+
+%% helper macros for celestial-sphere
+
+\newcommand\pgfmathsinandcos[3]{%
+  \pgfmathsetmacro#1{sin(#3)}%
+  \pgfmathsetmacro#2{cos(#3)}%
+}
+\newcommand\LongitudePlane[3][current plane]{%
+  \pgfmathsinandcos\sinEl\cosEl{#2} % elevation
+  \pgfmathsinandcos\sint\cost{#3} % azimuth
+  \tikzset{#1/.style={cm={\cost,\sint*\sinEl,0,\cosEl,(0,0)}}}
+}
+\newcommand\LatitudePlane[3][current plane]{%
+  \pgfmathsinandcos\sinEl\cosEl{#2} % elevation
+  \pgfmathsinandcos\sint\cost{#3} % latitude
+  \pgfmathsetmacro\yshift{\cosEl*\sint}
+  \tikzset{#1/.style={cm={\cost,0,0,\cost*\sinEl,(0,\yshift)}}} %
+}
+\newcommand\DrawLongitudeCircleName[3][1]{
+  \LongitudePlane{\angEl}{#2}
+  \tikzset{current plane/.prefix style={scale=#1}}
+   % angle of "visibility"
+  \pgfmathsetmacro\angVis{atan(sin(#2)*cos(\angEl)/sin(\angEl))} %
+  \draw[name path=#3,current plane] (\angVis:1) arc (\angVis:\angVis+180:1);
+  \draw[name path=dashed#3,current plane,dashed] (\angVis-180:1) arc (\angVis-180:\angVis:1);
+}
+\newcommand\DrawLatitudeCircleName[3][2]{
+  \LatitudePlane{\angEl}{#2}
+  \tikzset{current plane/.prefix style={scale=#1}}
+  \pgfmathsetmacro\sinVis{sin(#2)/cos(#2)*sin(\angEl)/cos(\angEl)}
+  % angle of "visibility"
+  \pgfmathsetmacro\angVis{asin(min(1,max(\sinVis,-1)))}
+  \draw[name path=#3,current plane] (\angVis:1) arc (\angVis:-\angVis-180:1);
+  \draw[name path=dashed#3,current plane,dashed] (180-\angVis:1) arc (180-\angVis:\angVis:1);
+}
+
+\newcommand{\xaumenta}[1]{${#1}\uparrow$}
+\newcommand{\xdiminuisce}[1]{${#1}\downarrow$}
